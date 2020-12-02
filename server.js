@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+let notesArr = [];
+
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
@@ -18,21 +20,25 @@ app.get("/", (req, res) => {
 
 const getData = fs.readFile(__dirname + "/db/db.json", (err, data) => {
     if (err) throw err;
-    return JSON.parse(data);
+    notesArr = [];
+    notesArr.push(...JSON.parse(data));
+    console.log(notesArr);
 });
 
 app.get("/api/notes", (req, res) => {
-    console.log(getData);
+    res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
 app.post("/api/notes", (req, res) => {
     const newNote = req.body;
-    fs.appendFile(__dirname + "/db/db.json", JSON.stringify(newNote), (err) => {
-        if (err) throw err;
-        console.log("Note added!");
-        res.end(newNote);
-    })
-})
+    console.log(newNote);
+    getData;
+    notesArr.push(newNote);
+    fs.writeFile("db/db.json", JSON.stringify(notesArr), (err) => 
+        err ? console.error(err) : console.log("Added new note!")
+    );
+    res.end(JSON.stringify(notesArr));
+});
 
 app.listen(PORT, () => {
     console.log("App listening on PORT " + PORT);
