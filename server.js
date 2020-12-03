@@ -11,6 +11,13 @@ app.use(express.json());
 // Tells the server to serve all files in the 'public' file
 app.use(express.static("public"));
 
+const writeDb = () => {
+    fs.writeFile("db/db.json", JSON.stringify(db), (err) => {
+        if (err) return console.log(err);
+        console.log("Database updated!");
+    });
+};
+
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
@@ -26,15 +33,20 @@ app.post("/api/notes", (req, res) => {
     newNote.id = noteID;
     console.log(newNote);
     db.push(newNote);
-    fs.writeFile("db/db.json", JSON.stringify(db), (err) => 
-        err ? console.error(err) : console.log("Added new note!")
-    );
+    writeDb();
     res.end(JSON.stringify(db));
 });
 
-app.delete("api/notes/:id", (req, res) => {
-    console.log(req.params.id);
-})
+app.delete("/api/notes/:id", (req, res) => {
+    for (let i = 0; i < db.length; i++) {
+        if (db[i].id == req.params.id) {
+            db.splice(i, 1);
+        };
+    };
+    writeDb();
+    console.log(db)
+    res.json(db);
+});
 
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"));
