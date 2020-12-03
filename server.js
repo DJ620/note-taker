@@ -18,6 +18,17 @@ const writeDb = () => {
     });
 };
 
+const createID = () => {
+    let id = [];
+    const letters = "abcdefghijklmnopqrstuvwxyz".split("");
+    const numbers = "0123456789".split("");
+    while (id.length < 6) {
+        id.push(letters[Math.floor(Math.random() * letters.length)]);
+        id.push(numbers[Math.floor(Math.random() * numbers.length)]);
+    };
+    return id.join("");
+}
+
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
@@ -26,9 +37,8 @@ app.get("/api/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
-let noteID = db.length;
 app.post("/api/notes", (req, res) => {
-    noteID++;
+    let noteID = createID();
     const newNote = req.body;
     newNote.id = noteID;
     console.log(newNote);
@@ -44,7 +54,6 @@ app.delete("/api/notes/:id", (req, res) => {
         };
     };
     writeDb();
-    console.log(db)
     res.json(db);
 });
 
