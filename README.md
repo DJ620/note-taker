@@ -6,6 +6,14 @@
 
 This is an application that allows the user to write, save, and delete notes. It uses express to create a server that hosts the webpage and stores the information.
 
+## Table of Contents
+
+* [Link](#link)
+* [Usage](#usage)
+* [Credits](#credits)
+* [Questions](#questions)
+* [License](#license)
+
 ## Link
 
 Heroku deployed application: 
@@ -42,6 +50,12 @@ http://www.uclaextension.edu
 The npm package "Express" was used to create the server.
 
 https://expressjs.com/
+
+## Questions
+
+For any questions, I, DJ Hersh, can be contacted via email at DanielJHersh@gmail.com
+
+My GitHub profile is located at https://github.com/DJ620
 
 ## License
 
