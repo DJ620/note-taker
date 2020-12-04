@@ -35,7 +35,13 @@ const createID = () => {
         id.push(letters[Math.floor(Math.random() * letters.length)]);
         id.push(numbers[Math.floor(Math.random() * numbers.length)]);
     };
-    return id.join("");
+    id = id.join("");
+    db.forEach(note => {
+        if (note.id === id) {
+            createID();
+        };
+    });
+    return id;
 };
 
 // Routes===========================================================================================================
